@@ -1,3 +1,5 @@
+const body = document.querySelector('body');
+
 
 fetch('https://randomuser.me/api/?results=12')
 .then(response => response.json())
@@ -30,3 +32,30 @@ function getUsers() {
 
 getUsers();
 
+
+function displayModal() {
+    let modalHtml = `
+        <div class='modal-bg'>
+            <div class='modal-content'></div>
+        </div>
+    `; 
+
+    body.insertAdjacentHTML(afterbegin, modalHtml);
+}
+
+function cardEvent() {
+    userCard.forEach(card => {
+        card.addEventListener(click, event => {
+            event.target.style.backgroundColor = 'blue';
+        })
+    })
+}
+
+
+const userCards = document.querySelector('.user-card');
+userCards.forEach(card => {
+    card.style.border = none;
+    card.addEventListener('click', event => {
+        event.target.style.backgroundColor = 'blue';
+    })
+})
