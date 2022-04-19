@@ -33,8 +33,8 @@ function displayUsers(employeeData) {
 
 
 function displayModal(index) {
-        console.log(employees)
-        console.log(index);
+
+        let date = new Date(employees[index].dob.date);
 
         let modalHtml = `
             <div class='modal-bg'>
@@ -53,7 +53,12 @@ function displayModal(index) {
                         ${employees[index].location.state} 
                         ${employees[index].location.postcode}
                     </div>
-                    <span class='birth'>${employees[index].dob.date}</span>
+                    <span class='birth'>
+                        Birthday: 
+                        ${date.getMonth()}/
+                        ${date.getDate()}/
+                        ${date.getFullYear()}
+                    </span>
                     
                 </div>
             </div>
