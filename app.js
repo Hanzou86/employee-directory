@@ -1,91 +1,77 @@
 const body = document.querySelector('body');
 const grid = document.querySelector('.grid-main');
-let userData;
-
-async function getUsers() {
-
-}
-getUsers()
-
-console.log(userData);
-
-// fetch('https://randomuser.me/api/?results=12')
-// .then(response => response.json())
-// .then(data => console.log(data));
+const modalBG = document.querySelector('.modal-bg');
+let employees = [];
 
 
 
-function displayUsers() {
-    let gridHtml = ``;
-    fetch('https://randomuser.me/api/?results=12')
-    .then(response => response.json())
-    .then(data => {   
-        data.results.forEach(user => {
+fetch('https://randomuser.me/api/?results=12')
+.then(response => response.json())
+.then(data => data.results)
+.then(displayUsers);
+
+
+
+function displayUsers(employeeData) { 
+    employees = employeeData;
+        let gridHtml = ``;
+        employees.forEach((employee, index) => {
             gridHtml += `
-                <div class='user-card'>
-                    <div class='pic-container'><img src='${user.picture.large}' class='profile-pic'></div>
+                <div class='employee-card' data-index='${index}'>
+                    <div class='pic-container'><img src='${employee.picture.large}' class='profile-pic'></div>
                     <div class='profile-info'>
-                        <h3 class='name'>${user.name.first} ${user.name.last}</h3>
-                        <span class='email'>${user.email}</span>
-                        <span class='location'>${user.location.city}</span>
+                        <h3 class='name'>${employee.name.first} ${employee.name.last}</h3>
+                        <span class='email'>${employee.email}</span>
+                        <span class='city'>${employee.location.city}</span>
                     </div>
                 </div>
             `;
             grid.innerHTML = gridHtml;
-        }); 
-        })
+        });
 }
 
-displayUsers();
 
-function displayModal() {
-     fetch('https://randomuser.me/api/?results=12')
-    .then(response => response.json())
-    .then(data => {
-        const user = data.requests.forEach(user => user)
-        console.log(user);
+
+function displayModal(index) {
+        console.log(employees)
+        console.log(index);
 
         let modalHtml = `
             <div class='modal-bg'>
                 <div class='modal-content'>
-                    <img src='${userData.picture.large}' class='profile-pic'>
-                    <h3 class='name'>${userData.name.first} ${user.name.last}</h3>
-                    <span class='email'>${userData.email}</span>
-                    <span class='location'>${userData.location.city}</span>
+                    <button class='close-modal' onclick="document.querySelector('.modal-bg').remove()">X</button>
+                    <img src='${employees[index].picture.large}' class='profile-pic'>
+                    <h3 class='name'>${employees[index].name.first} ${employees[index].name.last}</h3>
+                    <span class='email'>${employees[index].email}</span>
+                    <span class='city'>${employees[index].location.city}</span>
                     <hr>
-
+                    <span class='phone'>${employees[index].phone}</span>
+                    <div class='address'>
+                        ${employees[index].location.street.number} 
+                        ${employees[index].location.street.name}
+                        ${employees[index].location.city}, 
+                        ${employees[index].location.state} 
+                        ${employees[index].location.postcode}
+                    </div>
+                    <span class='birth'>${employees[index].dob.date}</span>
                     
                 </div>
             </div>
         `; 
 
         body.insertAdjacentHTML('afterbegin', modalHtml);
-    });
 }
 
 
+// Modal click event
 
-function cardEvent() {
         grid.addEventListener('click', event => {
-                const card = event.target.closest('.user-card');
-
+                const card = event.target.closest('.employee-card');
+                const index = card.getAttribute('data-index');
                 if (card !== null) {
-                    displayModal();
+                    displayModal(index);
+                    console.log(index);
                 }
             })
 
-}
-
-cardEvent();
-
-// const userCards = document.querySelector('.user-card');
-// userCards.forEach(card => {
-//     card.style.border = none;
-//     card.addEventListener('click', event => {
-//         event.target.
-//     })
-// })
-
-
-
-// Figure out how to apply api data to modal display
+const closeModal = document.querySelector('.close-modal');
